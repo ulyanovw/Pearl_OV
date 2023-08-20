@@ -2,13 +2,14 @@
 
 CLIENT_NAME="$common_name"
 CLIENT_LOCAL_IP="$ifconfig_pool_remote_ip"
+CLIENT_FILE="$path_to_conf/ccd/$CLIENT_NAME"
 
 connect() {
     update_connection_status true
-    if [ -f "$path_to_conf/ccd/$CLIENT_NAME" ] && grep -q "ifconfig-push" "$path_to_conf/ccd/$CLIENT_NAME"; then
+    if [ -f "$CLIENT_FILE" ] && grep -q "ifconfig-push" "$CLIENT_FILE"; then
         exit 0
     else
-        echo "ifconfig-push $CLIENT_LOCAL_IP 255.255.0.0" >> "$path_to_conf/ccd/$CLIENT_NAME"
+        echo "ifconfig-push $CLIENT_LOCAL_IP 255.255.0.0" >> "$CLIENT_FILE"
     fi
 }
 
@@ -18,7 +19,7 @@ disconnect() {
 
 update_connection_status() {
     local status="$1"
-    sed -i "s/#connected=.*/#connected=$status/" "$path_to_conf/ccd/$CLIENT_NAME"
+    sed -i "s/#connected=.*/#connected=$status/" "$CLIENT_FILE"
 }
 
 # Определение, является ли это событие client-connect или client-disconnect
