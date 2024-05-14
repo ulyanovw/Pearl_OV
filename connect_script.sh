@@ -7,11 +7,6 @@ CLIENT_FILE="$path_to_conf/ccd/$CLIENT_NAME"
 connect() {
     if [ -f "$CLIENT_FILE" ] && grep -q "#access=granted" "$CLIENT_FILE"; then
         update_connection_status true
-        if [ -f "$CLIENT_FILE" ] && grep -q "ifconfig-push" "$CLIENT_FILE"; then
-            exit 0
-        else
-            echo "ifconfig-push $CLIENT_LOCAL_IP 255.255.0.0" >> "$CLIENT_FILE"
-        fi
     else
         exit 1
     fi
